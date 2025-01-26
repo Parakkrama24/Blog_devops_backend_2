@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = 'C:\\Program Files\\apache-maven-3.9.9\\bin'  // Update with your Maven path
+        MAVEN_HOME = 'C:\\Program Files\\apache-maven-3.9.9'  // Update with your Maven path
         JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21.0.5\\bin'    // Update with your JDK path
     }
 
