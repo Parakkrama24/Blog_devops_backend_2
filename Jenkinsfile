@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         MAVEN_HOME = 'C:/Program Files/apache-maven-3.9.9'  // Update with your Maven path
-        JAVA_HOME = 'C:/Program Files/Java/jdk-21.0.5'    // Update with your JDK path
+        JAVA_HOME = 'C:/Program Files/Java/jdk-21.0.5'      // Update with your JDK path
     }
 
     stages {
@@ -17,14 +17,14 @@ pipeline {
         stage('Build') {
             steps {
                 // Build the project using Maven
-                sh "${MAVEN_HOME}/bin/mvn clean package"
+                bat "\"${MAVEN_HOME}\\bin\\mvn\" clean package"
             }
         }
 
         stage('Test') {
             steps {
                 // Run tests
-                sh "${MAVEN_HOME}/bin/mvn test"
+                bat "\"${MAVEN_HOME}\\bin\\mvn\" test"
             }
         }
 
@@ -32,17 +32,16 @@ pipeline {
             steps {
                 // Package the Spring Boot application
                 echo 'Packaging application...'
-                sh "${MAVEN_HOME}/bin/mvn package"
+                bat "\"${MAVEN_HOME}\\bin\\mvn\" package"
             }
         }
 
         stage('Deploy') {
             steps {
-                // Deploy the application (example: copying JAR to a server or running with Docker)
+                // Deploy the application (example: copying JAR to a server)
                 echo 'Deploying application...'
-                sh '''
-                # Example deployment script
-                cp target/*.jar /path/to/deployment/
+                bat '''
+                copy target\\*.jar C:\\path\\to\\deployment\\
                 '''
             }
         }
