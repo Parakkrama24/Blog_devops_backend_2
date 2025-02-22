@@ -26,7 +26,7 @@ import java.util.List;
 
 import com.devops.Blog.service.userService;
 import com.devops.Blog.repository.userRepository;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
