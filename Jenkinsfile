@@ -73,7 +73,7 @@ pipeline {
             steps {
                 echo 'Logging into Docker Hub...'
                 bat '''
-                echo PVL7iX.DtGif2zA | docker login -u %DOCKER_HUB_USER% --password-stdin
+                echo "PVL7iX.DtGif2zA" | docker login -u %DOCKER_HUB_USER% --password-stdin
                 '''
             }
         }
