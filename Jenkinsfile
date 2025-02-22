@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = 'C:\\Program Files\\apache-maven-3.9.9'  // Update if different
-        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21.0.5'      // Update if different
+        MAVEN_HOME = 'C:\\Program Files\\apache-maven-3.9.9'
+        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21.0.5'
         DB_HOST = "localhost"
         DB_PORT = "3306"
-        DOCKER_HUB_USER = "parakkrama24"  // Update with your actual Docker Hub username
+        DOCKER_HUB_USER = "parakkrama24"
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
     }
@@ -42,7 +42,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
                         bat '''
-                        docker build -t %DOCKER_HUB_USER%/%IMAGE_NAME%:%IMAGE_TAG% .
+                        docker build -t %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER% .
                         '''
                     }
                 }
@@ -52,23 +52,14 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 withCredentials([string(credentialsId: 'dockerPassword', variable: 'DOCKER_PASSWORD')]) {
-                    bat "docker login -u parakkrama -p ${DOCKER_PASSWORD}"
+                    bat "echo ${DOCKER_PASSWORD} | docker login -u %DOCKER_HUB_USER% --password-stdin"
                 }
-            }
-        }  
-
-        stage('Push Image') {
-            steps {
-                bat 'docker push  %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER%:%IMAGE_TAG%'
             }
         }
 
-        stage('Docker Push') {
+        stage('Push Image') {
             steps {
-                echo 'Pushing image to Docker Hub...'
-                bat '''
-                docker push %DOCKER_HUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%
-                '''
+                bat 'docker push %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER%'
             }
         }
 
@@ -84,14 +75,12 @@ pipeline {
                         -e MYSQL_DATABASE=blog_db ^
                         -e MYSQL_HOST=%DB_HOST% ^
                         -e MYSQL_PORT=%DB_PORT% ^
-                        -p 7070:8080 %DOCKER_HUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%
+                        -p 7070:8080 %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER%
                         '''
                     }
                 }
             }
         }
-
-      
     }
 
     post {
