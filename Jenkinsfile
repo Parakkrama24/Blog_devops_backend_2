@@ -9,6 +9,8 @@ pipeline {
         DOCKER_HUB_USER = "parakkrama24"
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
+        DOCKER_USER = 'parakkrama'
+        DOCKER_PASS = 'Para123##
     }
 
     stages {
@@ -37,17 +39,15 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+       
+        stage('Login to Docker Hub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
-                        bat '''
-                        docker build -t %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER% .
-                        '''
-                    }
+                    bat label: 'Docker Login', script: "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
                 }
             }
         }
+    
 
         stage('Login to Docker Hub') {
             steps {
