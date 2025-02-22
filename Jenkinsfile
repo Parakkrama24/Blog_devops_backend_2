@@ -9,8 +9,9 @@ pipeline {
         DOCKER_HUB_USER = "parakkrama24"
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
+
         DOCKER_USER = 'parakkrama'
-        DOCKER_PASS = 'Para123##'
+        DOCKER_PASS = 'Para123##'  // Ensure escaping is correct
     }
 
     stages {
@@ -39,17 +40,25 @@ pipeline {
             }
         }
 
-       
-        stage('Login to Docker Hub') {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
+                        bat '''
+                        docker build -t %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER% .
+                        '''
+                    }
+                }
+            }
+        }
+
+       stage('Login to Docker Hub') {
             steps {
                 script {
                     bat label: 'Docker Login', script: "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
                 }
             }
         }
-    
-
-  
     }
 }
 
@@ -77,7 +86,7 @@ pipeline {
                 }
             }
         }
-
+    }
 
     post {
         success {
@@ -87,4 +96,4 @@ pipeline {
             echo 'Pipeline failed. Please check the logs.'
         }
     }
-
+}
