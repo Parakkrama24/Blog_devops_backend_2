@@ -6,7 +6,7 @@ pipeline {
         JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21.0.5'      // Update if different
         DB_HOST = "localhost"
         DB_PORT = "3306"
-        DOCKER_HUB_USER = "parakkrama dasanayaka"  // Update with your Docker Hub username
+        DOCKER_HUB_USER = "parakkrama24"  // Update with your actual Docker Hub username
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
     }
@@ -42,27 +42,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
                         bat '''
-                        docker build -t blog-backend .
-                        '''
-                    }
-                }
-            }
-        }
-
-        stage('Run Docker Container') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
-                        bat '''
-                        docker stop blog-backend-container || true
-                        docker rm blog-backend-container || true
-                        docker run -d --name blog-backend-container ^
-                        -e MYSQL_USER=%DB_USER% ^
-                        -e MYSQL_PASSWORD=%DB_PASSWORD% ^
-                        -e MYSQL_DATABASE=blog_db ^
-                        -e MYSQL_HOST=%DB_HOST% ^
-                        -e MYSQL_PORT=%DB_PORT% ^
-                        -p 7070:8080 blog-backend
+                        docker build -t %DOCKER_HUB_USER%/%IMAGE_NAME%:%IMAGE_TAG% .
                         '''
                     }
                 }
@@ -71,23 +51,17 @@ pipeline {
 
         stage('Docker Login') {
             steps {
-                echo 'Logging into Docker Hub...'
-                bat '''
-                echo "PVL7iX.DtGif2zA" | docker login -u %DOCKER_HUB_USER% --password-stdin
-                '''
+                script {
+                    withCredentials([string(credentialsId: 'dockerPassword', variable: 'DOCKER_PASS')]) {
+                        bat '''
+                        echo %DOCKER_PASS% | docker login -u %DOCKER_HUB_USER% --password-stdin
+                        '''
+                    }
+                }
             }
         }
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-                bat '''
-                copy target\\*.jar C:\\path\\to\\deployment\\
-                '''
-            }
-        }
-
-         stage('Docker Push') {
+        stage('Docker Push') {
             steps {
                 echo 'Pushing image to Docker Hub...'
                 bat '''
@@ -95,6 +69,27 @@ pipeline {
                 '''
             }
         }
+
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
+                        bat '''
+                        docker stop blog-backend-container || docker rm blog-backend-container
+                        docker run -d --name blog-backend-container ^
+                        -e MYSQL_USER=%DB_USER% ^
+                        -e MYSQL_PASSWORD=%DB_PASSWORD% ^
+                        -e MYSQL_DATABASE=blog_db ^
+                        -e MYSQL_HOST=%DB_HOST% ^
+                        -e MYSQL_PORT=%DB_PORT% ^
+                        -p 7070:8080 %DOCKER_HUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%
+                        '''
+                    }
+                }
+            }
+        }
+
+      
     }
 
     post {
