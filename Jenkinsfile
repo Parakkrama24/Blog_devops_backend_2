@@ -49,15 +49,17 @@ pipeline {
             }
         }
 
-        stage('Docker Login') {
+        stage('Login to Docker Hub') {
             steps {
-                script {
-                    withCredentials([string(credentialsId: 'dockerPassword', variable: 'DOCKER_PASS')]) {
-                        bat '''
-                        echo %DOCKER_PASS% | docker login -u %DOCKER_HUB_USER% --password-stdin
-                        '''
-                    }
+                withCredentials([string(credentialsId: 'dockerPassword', variable: 'DOCKER_PASSWORD')]) {
+                    bat "docker login -u parakkrama -p ${DOCKER_PASSWORD}"
                 }
+            }
+        }  
+
+        stage('Push Image') {
+            steps {
+                bat 'docker push parakkrama/%IMAGE_NAME%:%BUILD_NUMBER%'
             }
         }
 
