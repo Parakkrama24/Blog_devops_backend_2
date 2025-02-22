@@ -59,7 +59,7 @@ pipeline {
                         -e MYSQL_DATABASE=blog_db ^
                         -e MYSQL_HOST=%DB_HOST% ^
                         -e MYSQL_PORT=%DB_PORT% ^
-                        -p 8080:8080 blog-backend
+                        -p 7070:8080 blog-backend
                         '''
                     }
                 }
