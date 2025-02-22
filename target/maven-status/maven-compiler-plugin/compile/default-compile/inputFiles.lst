@@ -2,12 +2,14 @@ C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\sr
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\config\JwtConstant.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\config\JwtProvider.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\config\SecurityConfig.java
+C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\config\WebConfig.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\Controllers\AuthController.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\Controllers\TestController.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\domain\USER_ROLE.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\Exceptions\UserException.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\model\user.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\repository\userRepository.java
+C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\request\LoginRequest.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\response\AuthResponse.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\service\CustomUserServiceImplementation.java
 C:\Users\parak\OneDrive\Documents\MEGAsync\cording\java\Blog_devops_backend_2\src\main\java\com\devops\Blog\service\userService.java

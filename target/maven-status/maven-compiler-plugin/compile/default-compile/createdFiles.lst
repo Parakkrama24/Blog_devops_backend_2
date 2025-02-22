@@ -8,7 +8,10 @@ com\devops\Blog\service\CustomUserServiceImplementation.class
 com\devops\Blog\service\userServiceImplementation.class
 com\devops\Blog\repository\userRepository.class
 com\devops\Blog\config\JwtConstant.class
+com\devops\Blog\config\WebConfig.class
+com\devops\Blog\request\LoginRequest.class
 com\devops\Blog\Controllers\TestController.class
 com\devops\Blog\service\userService.class
+com\devops\Blog\config\WebConfig$1.class
 com\devops\Blog\domain\USER_ROLE.class
 com\devops\Blog\response\AuthResponse.class
