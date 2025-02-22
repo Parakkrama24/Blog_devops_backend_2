@@ -59,7 +59,7 @@ pipeline {
 
         stage('Push Image') {
             steps {
-                bat 'docker push %IMAGE_NAME%:%BUILD_NUMBER%'
+                bat 'docker push  %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER%:%IMAGE_TAG%'
             }
         }
 
