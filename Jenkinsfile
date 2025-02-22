@@ -6,6 +6,9 @@ pipeline {
         JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21.0.5'      // Update if different
         DB_HOST = "localhost"
         DB_PORT = "3306"
+        DOCKER_HUB_USER = "parakkrama dasanayaka"  // Update with your Docker Hub username
+        IMAGE_NAME = "blog-backend"
+        IMAGE_TAG = "latest"
     }
 
     stages {
@@ -66,11 +69,29 @@ pipeline {
             }
         }
 
+        stage('Docker Login') {
+            steps {
+                echo 'Logging into Docker Hub...'
+                bat '''
+                echo PVL7iX.DtGif2zA | docker login -u %DOCKER_HUB_USER% --password-stdin
+                '''
+            }
+        }
+
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
                 bat '''
                 copy target\\*.jar C:\\path\\to\\deployment\\
+                '''
+            }
+        }
+
+         stage('Docker Push') {
+            steps {
+                echo 'Pushing image to Docker Hub...'
+                bat '''
+                docker push %DOCKER_HUB_USER%/%IMAGE_NAME%:%IMAGE_TAG%
                 '''
             }
         }
