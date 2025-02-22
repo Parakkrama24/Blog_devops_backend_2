@@ -59,7 +59,7 @@ pipeline {
 
         stage('Push Image') {
             steps {
-                bat 'docker push parakkrama/%IMAGE_NAME%:%BUILD_NUMBER%'
+                bat 'docker push %IMAGE_NAME%:%BUILD_NUMBER%'
             }
         }
 
