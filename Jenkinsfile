@@ -51,11 +51,11 @@ pipeline {
 
         stage('Login to Docker Hub') {
             steps {
-                withCredentials([string(credentialsId: 'dockerPassword', variable: 'DOCKER_PASSWORD')]) {
-                    bat "echo ${DOCKER_PASSWORD} | docker login -u %DOCKER_HUB_USER% --password-stdin"
-                }
-            }
+             withCredentials([usernamePassword(credentialsId: 'dockerPassword', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+            bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
         }
+    }
+}
 
         stage('Push Image') {
             steps {
