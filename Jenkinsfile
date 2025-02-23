@@ -6,7 +6,6 @@ pipeline {
         JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21.0.5'
         DB_HOST = "localhost"
         DB_PORT = "3306"
-        //DOCKER_HUB_USER = "parakkrama24"
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
         DOCKER_USER = 'parakkrama'
@@ -77,7 +76,7 @@ pipeline {
                         -e MYSQL_DATABASE=blog_db ^
                         -e MYSQL_HOST=%DB_HOST% ^
                         -e MYSQL_PORT=%DB_PORT% ^
-                        -p 7070:8080 %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER%
+                        -p 7070:8080 %DOCKER_USER%/%IMAGE_NAME%:%BUILD_NUMBER%
                         '''
                     }
                 }
