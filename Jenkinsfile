@@ -9,9 +9,8 @@ pipeline {
         DOCKER_HUB_USER = "parakkrama24"
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
-
         DOCKER_USER = 'parakkrama'
-        DOCKER_PASS = 'Para123##'  // Ensure escaping is correct
+        DOCKER_PASS = 'Para123##' 
     }
 
     stages {
@@ -52,15 +51,15 @@ pipeline {
             }
         }
 
-       stage('Login to Docker Hub') {
+         stage('Login to Docker Hub') {
             steps {
                 script {
-                    bat label: 'Docker Login', script: "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
-                }
+            withCredentials([string(credentialsId: 'docker_Password', variable: 'DOCKER_PASSWORD')]) {
+                bat 'echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USER% --password-stdin'
             }
         }
-    }
-
+            }
+        }
 
         stage('Push Image') {
             steps {
@@ -86,7 +85,7 @@ pipeline {
                 }
             }
         }
-    
+    }
 
     post {
         success {
