@@ -44,7 +44,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
                         bat '''
-                        docker build -t %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER% .
+                        docker build -t %DOCKER_USER%/%IMAGE_NAME%:%BUILD_NUMBER% .
                         '''
                     }
                 }
