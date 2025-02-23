@@ -6,7 +6,7 @@ pipeline {
         JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21.0.5'
         DB_HOST = "localhost"
         DB_PORT = "3306"
-        DOCKER_HUB_USER = "parakkrama24"
+        //DOCKER_HUB_USER = "parakkrama24"
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
         DOCKER_USER = 'parakkrama'
@@ -61,7 +61,7 @@ pipeline {
 
         stage('Push Image') {
             steps {
-                bat 'docker push %DOCKER_HUB_USER%/%IMAGE_NAME%:%BUILD_NUMBER%'
+                bat 'docker push %DOCKER_USER%/%IMAGE_NAME%:%BUILD_NUMBER%'
             }
         }
 
