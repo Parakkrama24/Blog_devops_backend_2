@@ -60,7 +60,7 @@ pipeline {
             }
         }
     }
-}
+
 
         stage('Push Image') {
             steps {
@@ -86,7 +86,7 @@ pipeline {
                 }
             }
         }
-    }
+    
 
     post {
         success {
