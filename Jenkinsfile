@@ -4,12 +4,13 @@ pipeline {
     environment {
         MAVEN_HOME = '/usr/share/maven'
         JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
+        PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
         DB_HOST = "localhost"
         DB_PORT = "3306"
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
         DOCKER_USER = 'parakkrama'
-        DOCKER_PASS = 'Para123##' 
+        DOCKER_PASS = 'Para123##'
     }
 
     stages {
@@ -21,20 +22,20 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh '"$MAVEN_HOME/bin/mvn" clean package'
+                sh 'mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
-                sh '"$MAVEN_HOME/bin/mvn" test'
+                sh 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging application...'
-                sh '"$MAVEN_HOME/bin/mvn" package'
+                sh 'mvn package'
             }
         }
 
@@ -53,7 +54,7 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 script {
-                    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
+                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
                 }
             }
         }
