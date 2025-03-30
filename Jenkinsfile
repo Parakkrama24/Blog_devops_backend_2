@@ -1,17 +1,21 @@
 pipeline {
     agent any
 
+
+
+
+
     environment {
         MAVEN_HOME = '/usr/share/maven'
         JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-        DB_HOST = "localhost"
+        DB_HOST = "jenkins-mysql-db.cc3c8i2skz7p.us-east-1.rds.amazonaws.com"
         DB_PORT = "3306"
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
         DOCKER_USER = 'parakkrama'
         DOCKER_PASS = 'Para123##'
-        
+
     }
 
     stages {
