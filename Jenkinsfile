@@ -11,6 +11,7 @@ pipeline {
         IMAGE_TAG = "latest"
         DOCKER_USER = 'parakkrama'
         DOCKER_PASS = 'Para123##'
+        
     }
 
     stages {
