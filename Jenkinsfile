@@ -2,14 +2,15 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_HOME = 'C:\\Program Files\\apache-maven-3.9.9'
-        JAVA_HOME = 'C:\\Program Files\\Java\\jdk-21.0.5'
+        MAVEN_HOME = '/usr/share/maven'
+        JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
+        PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
         DB_HOST = "localhost"
         DB_PORT = "3306"
         IMAGE_NAME = "blog-backend"
         IMAGE_TAG = "latest"
         DOCKER_USER = 'parakkrama'
-        DOCKER_PASS = 'Para123##' 
+        DOCKER_PASS = 'Para123##'
     }
 
     stages {
@@ -21,20 +22,20 @@ pipeline {
 
         stage('Build') {
             steps {
-                bat "\"%MAVEN_HOME%\\bin\\mvn\" clean package"
+                sh 'mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
-                bat "\"%MAVEN_HOME%\\bin\\mvn\" test"
+                sh 'mvn test'
             }
         }
 
         stage('Package') {
             steps {
                 echo 'Packaging application...'
-                bat "\"%MAVEN_HOME%\\bin\\mvn\" package"
+                sh 'mvn package'
             }
         }
 
@@ -42,30 +43,29 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
-                        bat '''
-                        docker build -t %DOCKER_USER%/%IMAGE_NAME%:%BUILD_NUMBER% .
+                        sh '''
+                        docker build -t $DOCKER_USER/$IMAGE_NAME:$BUILD_NUMBER .
                         '''
                     }
                 }
             }
         }
 
-         stage('Login to Docker Hub') {
+        stage('Login to Docker Hub') {
             steps {
                 script {
-                    bat label: 'Docker Login', script: "docker login -u %DOCKER_USER% -p %DOCKER_PASS%"
+                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
                 }
             }
         }
 
         stage('Push Image') {
             steps {
-                bat 'docker push %DOCKER_USER%/%IMAGE_NAME%:%BUILD_NUMBER%'
+                sh 'docker push $DOCKER_USER/$IMAGE_NAME:$BUILD_NUMBER'
             }
         }
 
     }
-
     post {
         success {
             echo 'Pipeline completed successfully!'
