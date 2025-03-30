@@ -47,7 +47,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
+                    withCredentials([usernamePassword(credentialsId: 'mysql-aws-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
                         sh '''
                         docker build -t $DOCKER_USER/$IMAGE_NAME:$BUILD_NUMBER .
                         '''
