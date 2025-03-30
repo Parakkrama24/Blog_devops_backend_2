@@ -65,27 +65,7 @@ pipeline {
             }
         }
 
-        stage('Run Docker Container') {
-            steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: 'mysql-creds', usernameVariable: 'DB_USER', passwordVariable: 'DB_PASSWORD')]) {
-                        sh '''
-                        docker stop blog-backend-container || true
-                        docker rm blog-backend-container || true
-                        docker run -d --name blog-backend-container \
-                        -e MYSQL_USER=$DB_USER \
-                        -e MYSQL_PASSWORD=$DB_PASSWORD \
-                        -e MYSQL_DATABASE=blog_db \
-                        -e MYSQL_HOST=$DB_HOST \
-                        -e MYSQL_PORT=$DB_PORT \
-                        -p 7070:8080 $DOCKER_USER/$IMAGE_NAME:$BUILD_NUMBER
-                        '''
-                    }
-                }
-            }
-        }
-    }
-
+ 
     post {
         success {
             echo 'Pipeline completed successfully!'
