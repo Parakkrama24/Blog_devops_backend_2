@@ -12,6 +12,27 @@ pipeline {
         DOCKER_USER = 'parakkrama'
     }
 
+
+     stage('Terraform Init') {
+            steps {
+                script {
+                    sh 'terraform init'
+                }
+            }
+        }
+
+
+    
+        // Terraform Apply
+        stage('Terraform Apply') {
+            steps {
+                script {
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+    
+
     stages {
         stage('Clone Repository') {
             steps {
