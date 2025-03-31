@@ -1,21 +1,15 @@
 pipeline {
     agent any
 
-
-
-
-
     environment {
         MAVEN_HOME = '/usr/share/maven'
         JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
         PATH = "${JAVA_HOME}/bin:${MAVEN_HOME}/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
-        DB_HOST = "jenkins-mysql-db.cc3c8i2skz7p.us-east-1.rds.amazonaws.com"
-        DB_PORT = "3306"
-        IMAGE_NAME = "blog-backend"
-        IMAGE_TAG = "latest"
+        DB_HOST = 'jenkins-mysql-db.cc3c8i2skz7p.us-east-1.rds.amazonaws.com'
+        DB_PORT = '3306'
+        IMAGE_NAME = 'blog-backend'
+        IMAGE_TAG = 'latest'
         DOCKER_USER = 'parakkrama'
-        DOCKER_PASS = 'Para123##'
-
     }
 
     stages {
@@ -59,7 +53,9 @@ pipeline {
         stage('Login to Docker Hub') {
             steps {
                 script {
-                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                    withCredentials([string(credentialsId: 'docker-hub-password', variable: 'DOCKER_PASS')]) {
+                        sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                    }
                 }
             }
         }
@@ -69,7 +65,6 @@ pipeline {
                 sh 'docker push $DOCKER_USER/$IMAGE_NAME:$BUILD_NUMBER'
             }
         }
-
     }
     post {
         success {
