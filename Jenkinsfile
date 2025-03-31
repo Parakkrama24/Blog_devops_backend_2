@@ -12,8 +12,9 @@ pipeline {
         DOCKER_USER = 'parakkrama'
     }
 
+    stages {
 
-     stage('Terraform Init') {
+        stage('Terraform Init') {
             steps {
                 script {
                     sh 'terraform init'
@@ -21,8 +22,6 @@ pipeline {
             }
         }
 
-
-    
         // Terraform Apply
         stage('Terraform Apply') {
             steps {
@@ -31,9 +30,7 @@ pipeline {
                 }
             }
         }
-    
 
-    stages {
         stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/Parakkrama24/Blog_devops_backend_2.git'
